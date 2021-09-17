@@ -87,6 +87,7 @@ export default {
       this.$api.goodsDetail(id).then(res => {
         if (res.code === 200) {
           this.goods = res.data
+          document.title = res.data.name
           this.goods.sellDesc = this.goods.sellDesc[0].split('\n')
         }
       })

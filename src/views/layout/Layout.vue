@@ -11,9 +11,12 @@
           </div>
         </div>
         <div class="pos-rel">
-          <div class="tit_item flex">
-            <Dropdown style="margin-right: 10px" @on-click="dropdown" trigger="click" v-if="user">
-              <span class="shou">{{ user.username }}</span>
+          <div class="tit_item flex jce head-box">
+            <Dropdown @on-click="dropdown" trigger="click" v-if="user">
+              <div class="flex">
+                <div class="shou mr-10">{{ user.username }}</div>
+                <div class="line"></div>
+              </div>
               <DropdownMenu slot="list">
                 <DropdownItem>退出登录</DropdownItem>
               </DropdownMenu>
@@ -24,7 +27,7 @@
               <div class="shou m-lr-10" @click="dl">注册</div>
             </div>
 
-            <div class="line"></div>
+            <!-- <div class="line"></div> -->
             <div class="shou m-lr-10">消息通知</div>
             <div
               class="flex shou p-10 car-box"
@@ -40,14 +43,16 @@
           </div>
           <div
             class="car-centent"
-            :class="entering ? 'dh' : 'dh1'"
+            :class="entering ? 'up' : 'down'"
             ref="carbox"
             @mouseenter="enter"
             @mouseleave="leave1"
           >
-            <div class="p-10 t-a-c a-box" v-if="carsum === 0 && entering">购物车中还没有商品，赶紧选购吧！</div>
-            <div class="p-10 t-a-c a-box" v-if="carsum && entering">
-              <HeadCar v-if="carData" :carData="carData"></HeadCar>
+            <div class="box">
+              <div class="p-10 t-a-c a-box" v-if="carsum === 0">购物车中还没有商品，赶紧选购吧！</div>
+              <div class="p-10 t-a-c a-box" v-if="carsum">
+                <HeadCar v-if="carData" :carData="carData"></HeadCar>
+              </div>
             </div>
           </div>
         </div>
@@ -109,7 +114,7 @@
         <i class="iconfont icon-shouji font-s-18"></i>
         <!-- <div>手机App</div> -->
       </div>
-      <div class="p-5 m-b-5 bgc-white" @click="my">
+      <div class="p-5 m-b-5 bgc-white">
         <i class="iconfont icon-yonghu"></i>
       </div>
       <div class="p-5 m-b-5 bgc-white">
@@ -118,7 +123,7 @@
       <div class="p-5 m-b-5 bgc-white">
         <img src="../../assets/side/kf.png" class="side-img" alt />
       </div>
-      <div class="p-5 m-b-5 bgc-white">
+      <div class="p-5 m-b-5 bgc-white" @click="my">
         <i class="iconfont icon-gwc font-s-18"></i>
       </div>
       <div class style="margin-top: 30px;">
@@ -170,14 +175,13 @@ export default {
     },
     //移出
     leave(e) {
-      // this.entering = false
-      // 
+      this.entering = false
       let top = this.$refs.car.getBoundingClientRect().top
       if (Math.abs(top - e.pageY) > 5) this.entering = false
     },
-    // 去我的
+    // 去购物车
     my() {
-      this.$router.push('/My')
+      this.$router.push('/Car')
     },
     // 显示隐藏盒子购物车
     leave1(e) {
@@ -247,7 +251,13 @@ export default {
   .tit_item {
     color: #b0b0a4;
   }
-
+  .head-box {
+    position: relative;
+    z-index: 999999999999;
+    background-color: #333333;
+    width: 300px;
+    text-align: right;
+  }
   .shou:hover {
     color: #fff;
   }
@@ -275,50 +285,45 @@ export default {
     }
   }
 
-  .car-centent {
-    position: absolute;
-    left: -120px;
-    right: 0;
-    z-index: 9999;
-    background-color: #fff;
-    box-shadow: 0 3px 10px gainsboro;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .none {
+    display: none;
   }
-
-  .dh {
-    animation: cardh 0.5s 1 forwards;
-    display: block !important;
-  }
-  .dh1 {
-    animation: cardh1 0.5s 1 forwards;
+  .block {
     display: block;
   }
+  .car-centent {
+    position: absolute;
+    left: 10px;
+    right: 0;
+    background-color: #fff;
+    z-index: 9999;
+  }
 
-  // 创建动画
-  @keyframes cardh {
+  .up {
+    animation: up 1s forwards;
+  }
+  .down {
+    animation: down 1s forwards;
+  }
+  @keyframes up {
     from {
-      display: none;
-      // 字一开始显示  解决 设置透明度
-      // & ~ .a-box {
-      //   display: none;
-      // }
+      opacity: 0;
+      transform: translateY(-100%);
+      box-shadow: 0 0px 0px gainsboro;
     }
     to {
-      height: auto;
-      opacity: 1;
-      display: flex !important;
+      transform: translateY(0);
+      box-shadow: 0 3px 10px gainsboro;
     }
   }
-  // 创建动画
-  @keyframes cardh1 {
+  @keyframes down {
     from {
-      height: auto;
+      transform: translateY(0);
     }
     to {
-      height: 0;
-      display: none !important;
+      opacity: 0;
+      display: none;
+      transform: translateY(-100%);
     }
   }
 }

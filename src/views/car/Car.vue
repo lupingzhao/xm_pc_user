@@ -21,12 +21,20 @@
         <div class="m-tb-25" v-show="carData.length > 0">
           <Card class="width-100 p-10">
             <!-- \全选 -->
-            <Checkbox v-model="checkAll" @on-change="handleCheckAll">
-              <span class="font-s-16 m-lr-10">全选</span>
-            </Checkbox>
+            <div class="flex goods-box">
+              <Checkbox v-model="checkAll" @on-change="handleCheckAll">
+                <span class="font-s-16 m-lr-10">全选</span>
+              </Checkbox>
+              <div class="box-img"></div>
+              <div class="spec1"></div>
+              <div class="price t-a-c">价格</div>
+              <div class="step">数量</div>
+              <div class="t-price j-color">总价</div>
+            </div>
+
             <div v-for="(t,i) in carData" :key="i" class="flex p-tb-10 goods-box bor-b">
               <Checkbox v-model="t.check" @on-change="sigel"></Checkbox>
-              <img :src="t.goods.cover" alt />
+              <img :src="t.goods.cover" alt @click="go(t.goods._id)" />
               <div class="spec">
                 <span>{{ t.goods.name }}</span>
                 <span class="m-l-10" v-for="(t1,i1) in t.spec" :key="i1">{{ t1 }}</span>
@@ -39,41 +47,44 @@
               <div class="shou" @click="del(t._id, i)">X</div>
             </div>
 
-            <div class="order flex jcsb m-tb-25" ref="botomm">
-              <div class="flex">
-                <div class="m-lr-10 act-color" @click="$router.push('/')">继续购物</div>
-                <div>
-                  共计
-                  <span class="j-color">{{ total }}</span>
-                  件商品，已选择
-                  <span class="j-color">{{ checkAllGroup.length }}</span>
-                  件
+            <Affix :offset-bottom="20">
+              <div class="order flex bgc-low-gray p-10 jcsb m-tb-25" ref="botomm">
+                <div class="flex">
+                  <div class="m-lr-10 act-color" @click="$router.push('/')">继续购物</div>
+                  <div>
+                    共计
+                    <span class="j-color">{{ total }}</span>
+                    件商品，已选择
+                    <span class="j-color">{{ checkAllGroup.length }}</span>
+                    件
+                  </div>
+                </div>
+                <div class="flex">
+                  <div class="m-lr-10">
+                    合计：
+                    <span class="font-s-18 j-color">{{ sum }}</span>
+                    元
+                  </div>
+                  <div class="m-lr-10">
+                    <Button
+                      type="warning"
+                      @click="order"
+                      style="background-color: #FF6A00;"
+                      class="btn"
+                    >去结算</Button>
+                  </div>
                 </div>
               </div>
-              <div class="flex">
-                <div class="m-lr-10">
-                  合计：
-                  <span class="font-s-18 j-color">{{ sum }}</span>
-                  元
-                </div>
-                <div class="m-lr-10">
-                  <Button
-                    type="warning"
-                    @click="order"
-                    style="background-color: #FF6A00;"
-                    class="btn"
-                  >去结算</Button>
-                </div>
-              </div>
-            </div>
+            </Affix>
           </Card>
         </div>
       </div>
       <!-- 没有商品时 -->
-      <div class="flex jcc" v-if="carData.length < 0" style="margin-top: 10%;">
+      <div class="flex jcc" v-if="carData.length < 0 || !user" style="margin-top: 10%;">
         <img src="https://cdn.cnbj1.fds.api.mi-img.com/staticsfile/cart/cart-empty.png" alt />
         <div class="m-lr-10">
-          <div class="font-s-20 m-tb-25">您的购物车还是空的！</div>
+          <div class="font-s-20 mb-10">您的购物车还是空的！</div>
+          <div v-if="!user" class="m-tb-25">登录后将显示您之前加入的商品</div>
           <div>
             <Button type="warning" @click="$router.push('/')">立即去选购</Button>
           </div>
@@ -177,11 +188,21 @@ export default {
       // let h = a.height + a.top
       // console.log(a)
       // console.log(a.top)s
+    },
+    // 去详情
+    go(id) {
+      this.$router.push({
+        path: "/Details",
+        query: {
+          id: id
+        }
+      })
     }
-
   },
   mounted() {
-    this.getCat()
+    if (user) {
+      this.getCat()
+    }
     // window.addEventListener('scroll', this.handleScroll)
   },
   computed: {
@@ -214,7 +235,14 @@ export default {
       height: 120px;
       margin-right: 10px;
     }
+    .box-img {
+      width: 75px;
+    }
     .spec {
+      width: 40%;
+      margin-left: 10px;
+    }
+    .spec1 {
       width: 40%;
       margin-left: 10px;
     }
