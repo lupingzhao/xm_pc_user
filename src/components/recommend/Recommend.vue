@@ -12,8 +12,9 @@
         dots="outside"
         :autoplay="true"
         :autoplay-speed="6000"
+        v-if="goods.length"
       >
-        <CarouselItem v-show="goods.length" v-for="(t,i) in goods" :key="i">
+        <CarouselItem v-for="(t,i) in goods" :key="i">
           <div class="c-box flex">
             <div class="t-a-c item jcc" v-for="(t1,i1) in t" :key="i1" @click="goto(t1._id)">
               <img :src="t1.cover" alt />
@@ -50,7 +51,7 @@ export default {
           for (let i = 0; i < res.data.length; i += 5) {
             this.goods.push(res.data.slice(i, i + 5));
           }
-          // this.goods = this.goods.slice(0, 2)
+          this.goods = this.goods.slice(0, 2)
         }
       })
     },

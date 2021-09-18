@@ -17,74 +17,76 @@
       </div>
 
       <!-- 商品 -->
-      <div id="goods" ref="goods">
-        <div class="m-tb-25" v-show="carData.length > 0">
-          <Card class="width-100 p-10">
-            <!-- \全选 -->
-            <div class="flex goods-box">
-              <Checkbox v-model="checkAll" @on-change="handleCheckAll">
-                <span class="font-s-16 m-lr-10">全选</span>
-              </Checkbox>
-              <div class="box-img"></div>
-              <div class="spec1"></div>
-              <div class="price t-a-c">价格</div>
-              <div class="step t-a-c">数量</div>
-              <div class="t-price j-color t-a-c">总价</div>
-            </div>
 
-            <div v-for="(t,i) in carData" :key="i" class="flex p-tb-10 goods-box bor-b">
-              <Checkbox v-model="t.check" @on-change="sigel"></Checkbox>
-              <img :src="t.goods.cover" alt @click="go(t.goods._id)" />
-              <div class="spec">
-                <span>{{ t.goods.name }}</span>
-                <span class="m-l-10" v-for="(t1,i1) in t.spec" :key="i1">{{ t1 }}</span>
-              </div>
-              <div class="price t-a-c">{{ t.goods.presentPrice }}元</div>
-              <div class="step t-a-c">
-                <InputNumber
-                  :controls-outside="true"
-                  :max="10"
-                  :min="1"
-                  :step="1"
-                  v-model="t.count"
-                  style="width: 100px;"
-                  @on-change="count(t._id, t.count)"
-                ></InputNumber>
-              </div>
-              <div class="t-price j-color t-a-c">{{ t.goods.presentPrice * t.count }}元</div>
-              <div class="shou" @click="del(t._id, i)">X</div>
-            </div>
+      <div v-show="carData.length > 0">
+        <Card class="width-100 p-10 m-tb-25">
+          <!-- \全选 -->
+          <div class="flex goods-box">
+            <Checkbox v-model="checkAll" @on-change="handleCheckAll">
+              <span class="font-s-16 m-lr-10">全选</span>
+            </Checkbox>
+            <div class="box-img"></div>
+            <div class="spec1"></div>
+            <div class="price t-a-c">价格</div>
+            <div class="step t-a-c">数量</div>
+            <div class="t-price j-color t-a-c">总价</div>
+          </div>
 
-            <div class="order flex bgc-low-gray p-10 jcsb m-tb-25" ref="botomm">
-              <div class="flex">
-                <div class="m-lr-10 act-color" @click="$router.push('/')">继续购物</div>
-                <div>
-                  共计
-                  <span class="j-color">{{ total }}</span>
-                  件商品，已选择
-                  <span class="j-color">{{ checkAllGroup.length }}</span>
-                  件
-                </div>
-              </div>
-              <div class="flex">
-                <div class="m-lr-10">
-                  合计：
-                  <span class="font-s-18 j-color">{{ sum }}</span>
-                  元
-                </div>
-                <div class="m-lr-10">
-                  <Button
-                    type="warning"
-                    @click="order"
-                    style="background-color: #FF6A00;"
-                    class="btn"
-                  >去结算</Button>
-                </div>
+          <div v-for="(t,i) in carData" :key="i" class="flex p-tb-10 goods-box bor-b">
+            <Checkbox v-model="t.check" @on-change="sigel"></Checkbox>
+            <img :src="t.goods.cover" alt @click="go(t.goods._id)" />
+            <div class="spec">
+              <span>{{ t.goods.name }}</span>
+              <span class="m-l-10" v-for="(t1,i1) in t.spec" :key="i1">{{ t1 }}</span>
+            </div>
+            <div class="price t-a-c">{{ t.goods.presentPrice }}元</div>
+            <div class="step t-a-c">
+              <InputNumber
+                :controls-outside="true"
+                :max="10"
+                :min="1"
+                :step="1"
+                v-model="t.count"
+                style="width: 100px;"
+                @on-change="count(t._id, t.count)"
+              ></InputNumber>
+            </div>
+            <div class="t-price j-color t-a-c">{{ t.goods.presentPrice * t.count }}元</div>
+            <div class="shou" @click="del(t._id, i)">X</div>
+          </div>
+        </Card>
+        <Affix :offset-bottom="0">
+          <div class="order flex bgc-low-gray p-10 jcsb" ref="botomm">
+            <div class="flex">
+              <div class="m-lr-10 act-color" @click="$router.push('/')">继续购物</div>
+              <div>
+                共计
+                <span class="j-color">{{ total }}</span>
+                件商品，已选择
+                <span class="j-color">{{ checkAllGroup.length }}</span>
+                件
               </div>
             </div>
-          </Card>
-        </div>
+            <div class="flex">
+              <div class="m-lr-10">
+                合计：
+                <span class="font-s-18 j-color">{{ sum }}</span>
+                元
+              </div>
+              <div class="m-lr-10">
+                <Button
+                  type="warning"
+                  @click="order"
+                  style="background-color: #FF6A00;"
+                  class="btn"
+                >去结算</Button>
+              </div>
+            </div>
+          </div>
+        </Affix>
+        <Recommend></Recommend>
       </div>
+
       <!-- 没有商品时 -->
       <div class="flex jcc" v-if="!carData.length || !user" style="margin-top: 10%;">
         <img src="https://cdn.cnbj1.fds.api.mi-img.com/staticsfile/cart/cart-empty.png" alt />
@@ -105,6 +107,7 @@
 </template>
 
 <script>
+import Recommend from "../../components/recommend/Recommend.vue";
 export default {
   name: '',
   props: {},
@@ -120,7 +123,7 @@ export default {
       delindex: -1
     }
   },
-  components: {},
+  components: { Recommend },
   methods: {
     // 获取购物车数据
     getCat() {

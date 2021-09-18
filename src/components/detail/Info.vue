@@ -50,7 +50,16 @@
       </div>
       <div class="flex m-tb-10">
         <div class="mr-10">选择数量:</div>
-        <InputNumber :max="10" :min="1" size="large" :step="1" v-model="count"></InputNumber>
+        <InputNumber
+          class="t-a-c"
+          style="width: 120px;"
+          :controls-outside="true"
+          :max="10"
+          :min="1"
+          size="large"
+          :step="1"
+          v-model="count"
+        ></InputNumber>
       </div>
       <div class="flex jcsb">
         <Button
