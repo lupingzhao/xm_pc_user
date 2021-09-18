@@ -13,7 +13,7 @@
       <FormItem label="详细地址" prop="detailAddress">
         <Input v-model="formValidate.detailAddress" placeholder="请输入详细地址"></Input>
       </FormItem>
-      <FormItem label="是否默认" required>
+      <FormItem label="是否默认">
         <Checkbox v-model="formValidate.isDefault" />
       </FormItem>
       <FormItem FormItem class="t-a-r">
@@ -98,7 +98,6 @@ export default {
               this.cancel(1)
             })
           }
-
         }
       })
     }

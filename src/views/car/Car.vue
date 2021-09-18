@@ -88,7 +88,11 @@
       </div>
 
       <!-- 没有商品时 -->
-      <div class="flex jcc" v-if="!carData.length || !user" style="margin-top: 10%;">
+      <div
+        class="flex jcc"
+        v-if="!carData.length || !user"
+        style="margin-top: 10%;margin-bottom:10%"
+      >
         <img src="https://cdn.cnbj1.fds.api.mi-img.com/staticsfile/cart/cart-empty.png" alt />
         <div class="m-lr-10">
           <div class="font-s-20 mb-10">您的购物车还是空的！</div>

@@ -57,9 +57,18 @@
         </div>
       </div>
     </div>
-    <div class="t-a-r">
-      <Button class="mr-10" @click="$router.push('/Car')">返回购物车</Button>
-      <Button type="warning" @click="order">立即结算</Button>
+    <div class="flex jcsb">
+      <div>
+        <div class="m-tb-10">
+          <span class="mr-10">{{ name }}</span>
+          <span>{{ mobile.slice(0, 3) + '****' + mobile.slice(7) }}</span>
+        </div>
+        <div>{{ address }}</div>
+      </div>
+      <div>
+        <Button class="mr-10" @click="$router.push('/Car')">返回购物车</Button>
+        <Button type="warning" @click="order">立即结算</Button>
+      </div>
     </div>
   </div>
 </template>
@@ -79,7 +88,8 @@ export default {
       cupous: 0,
       clist: [],
       address: '',
-      mobile: ''
+      mobile: '',
+      name: ''
     }
   },
   components: {},

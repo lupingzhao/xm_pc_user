@@ -26,7 +26,7 @@
               v-show="address.length && i < 4"
             >
               <div class="m-tb-10">{{ t.username }}</div>
-              <div class="m-tb-10">{{ t.mobile }}</div>
+              <div class="m-tb-10">{{ t.mobile.replace(/^(\d{3})\d{4}(\d+)/, "$1****$2") }}</div>
               <div class="width-90">{{ t.address }},{{ t.detailAddress }}</div>
               <div
                 class="m-tb-25 btn-1 btn"
@@ -79,7 +79,7 @@
           </Collapse>
         </div>
         <!-- 订单 -->
-        <Order ref="orderc" class="m-tb-10"></Order>
+        <Order ref="orderc" class="m-tb-25"></Order>
       </Card>
     </div>
 
@@ -119,6 +119,7 @@ export default {
         if (res.code === 200) {
           this.$refs.orderc.address = res.data[0].address + res.data[0].detailAddress
           this.$refs.orderc.mobile = res.data[0].mobile
+          this.$refs.orderc.name = res.data[0].username
           res.data.length && res.data.map(i => {
             this.address.push(i)
           })
@@ -139,6 +140,7 @@ export default {
       this.act = i
       this.$refs.orderc.address = t.address + t.detailAddress
       this.$refs.orderc.mobile = t.mobile
+      this.$refs.orderc.name = t.username
     },
     // 编辑
     edit(t) {
