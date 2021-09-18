@@ -106,7 +106,7 @@ export default {
       width: 80px;
     }
     .box {
-      width: ceil(96%/4);
+      width: ceil(96% / 4);
       margin-right: 1%;
     }
   }
