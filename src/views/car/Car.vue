@@ -99,7 +99,7 @@
         </div>
       </div>
     </div>
-
+    <HomeFooter></HomeFooter>
     <Modal v-model="modal1" width="250" @on-ok="ok">
       <div class="t-a-c m-tb-10">是否删除该商品？</div>
     </Modal>
@@ -108,6 +108,7 @@
 
 <script>
 import Recommend from "../../components/recommend/Recommend.vue";
+import HomeFooter from "../../components/footer/HomeFooter.vue";
 export default {
   name: '',
   props: {},
@@ -123,7 +124,7 @@ export default {
       delindex: -1
     }
   },
-  components: { Recommend },
+  components: { Recommend, HomeFooter },
   methods: {
     // 获取购物车数据
     getCat() {
