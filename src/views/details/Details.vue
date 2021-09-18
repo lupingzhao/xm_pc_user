@@ -125,6 +125,7 @@ export default {
     $route: {
       handler(val) {
         if (val.query.id) {
+          console.log(val.query.id)
           this.getData(val.query.id)
         }
       },

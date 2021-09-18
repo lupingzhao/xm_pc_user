@@ -81,7 +81,9 @@ export default {
       hotWord: [],
       ishot: false,
       placeholder: '请输入关键字',
-      timer: null
+      timer: null,
+      seachv: '',
+      detav: ''
     }
   },
   components: {
@@ -116,32 +118,26 @@ export default {
         // 是否搜索的placeholder的值
         val = this.placeholder
       }
-      // if (this.$route.path === '/Seach') {
-      //   // 当前在搜索页时分发事件
-      //   this.$emit('seach', val);
-      // } else {
-      this.$router.push({
-        path: "/Seach",
-        query: {
-          keyWord: val
-        }
-      })
-      // }
+      if (this.$route.query.keyWord !== val) {
+        // 当前在搜索页时分发事件
+        this.$router.push({
+          path: "/Seach",
+          query: {
+            keyWord: val
+          }
+        })
+      } else return
     },
     // 去详情页
     go(id) {
-      // if (this.$route.path === '/Details') {
-      //   // 分发事件
-      //   this.$emit('to', id);
-      // } else {
-      this.$router.push({
-        path: "/Details",
-        query: {
-          id: id
-        }
-      })
-
-      // }
+      if (this.$route.query.id !== id) {
+        this.$router.push({
+          path: "/Details",
+          query: {
+            id: id
+          }
+        })
+      } else this.hAll = false
       this.recmGoods = []
     },
     // 去首页
@@ -244,6 +240,13 @@ export default {
     right: 0;
     left: 0;
     z-index: 999999;
+    ::-webkit-scrollbar {
+      display: none;
+      width: 0 !important;
+      height: 0 !important;
+      -webkit-appearance: none;
+      background: transparent;
+    }
     box-shadow: 0 2px 6px -1px gray; //底部阴影
     .box-item {
       width: ceil(96%/6);

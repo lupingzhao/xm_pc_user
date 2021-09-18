@@ -113,5 +113,6 @@ router.beforeEach((to, from, next) => {
   // 网页标题
   document.title = to.meta.title
   next()
+  window.scroll(0, 0)
 })
 export default router

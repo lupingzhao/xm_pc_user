@@ -28,8 +28,8 @@
               <div class="box-img"></div>
               <div class="spec1"></div>
               <div class="price t-a-c">价格</div>
-              <div class="step">数量</div>
-              <div class="t-price j-color">总价</div>
+              <div class="step t-a-c">数量</div>
+              <div class="t-price j-color t-a-c">总价</div>
             </div>
 
             <div v-for="(t,i) in carData" :key="i" class="flex p-tb-10 goods-box bor-b">
@@ -40,47 +40,53 @@
                 <span class="m-l-10" v-for="(t1,i1) in t.spec" :key="i1">{{ t1 }}</span>
               </div>
               <div class="price t-a-c">{{ t.goods.presentPrice }}元</div>
-              <div class="step">
-                <InputNumber :max="10" :min="1" :step="1" v-model="t.count"></InputNumber>
+              <div class="step t-a-c">
+                <InputNumber
+                  :controls-outside="true"
+                  :max="10"
+                  :min="1"
+                  :step="1"
+                  v-model="t.count"
+                  style="width: 100px;"
+                  @on-change="count(t._id, t.count)"
+                ></InputNumber>
               </div>
-              <div class="t-price j-color">{{ t.goods.presentPrice * t.count }}元</div>
+              <div class="t-price j-color t-a-c">{{ t.goods.presentPrice * t.count }}元</div>
               <div class="shou" @click="del(t._id, i)">X</div>
             </div>
 
-            <Affix :offset-bottom="20">
-              <div class="order flex bgc-low-gray p-10 jcsb m-tb-25" ref="botomm">
-                <div class="flex">
-                  <div class="m-lr-10 act-color" @click="$router.push('/')">继续购物</div>
-                  <div>
-                    共计
-                    <span class="j-color">{{ total }}</span>
-                    件商品，已选择
-                    <span class="j-color">{{ checkAllGroup.length }}</span>
-                    件
-                  </div>
-                </div>
-                <div class="flex">
-                  <div class="m-lr-10">
-                    合计：
-                    <span class="font-s-18 j-color">{{ sum }}</span>
-                    元
-                  </div>
-                  <div class="m-lr-10">
-                    <Button
-                      type="warning"
-                      @click="order"
-                      style="background-color: #FF6A00;"
-                      class="btn"
-                    >去结算</Button>
-                  </div>
+            <div class="order flex bgc-low-gray p-10 jcsb m-tb-25" ref="botomm">
+              <div class="flex">
+                <div class="m-lr-10 act-color" @click="$router.push('/')">继续购物</div>
+                <div>
+                  共计
+                  <span class="j-color">{{ total }}</span>
+                  件商品，已选择
+                  <span class="j-color">{{ checkAllGroup.length }}</span>
+                  件
                 </div>
               </div>
-            </Affix>
+              <div class="flex">
+                <div class="m-lr-10">
+                  合计：
+                  <span class="font-s-18 j-color">{{ sum }}</span>
+                  元
+                </div>
+                <div class="m-lr-10">
+                  <Button
+                    type="warning"
+                    @click="order"
+                    style="background-color: #FF6A00;"
+                    class="btn"
+                  >去结算</Button>
+                </div>
+              </div>
+            </div>
           </Card>
         </div>
       </div>
       <!-- 没有商品时 -->
-      <div class="flex jcc" v-if="carData.length < 0 || !user" style="margin-top: 10%;">
+      <div class="flex jcc" v-if="!carData.length || !user" style="margin-top: 10%;">
         <img src="https://cdn.cnbj1.fds.api.mi-img.com/staticsfile/cart/cart-empty.png" alt />
         <div class="m-lr-10">
           <div class="font-s-20 mb-10">您的购物车还是空的！</div>
@@ -197,10 +203,23 @@ export default {
           id: id
         }
       })
+    },
+    // 商品数量改变
+    count(t, t1) {
+      if (t1) {
+        this.$api.updateCart({
+          // 商品id
+          id: t,
+          // 用户id
+          user_id: this.user._id,
+          // 商品数量
+          count: t1,
+        }).then(res => { })
+      }
     }
   },
   mounted() {
-    if (user) {
+    if (this.user) {
       this.getCat()
     }
     // window.addEventListener('scroll', this.handleScroll)

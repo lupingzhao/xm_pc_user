@@ -63,12 +63,14 @@ export default {
     },
     // 去详情
     goto(id) {
-      this.$router.push({
-        path: "/Details",
-        query: {
-          id: id
-        }
-      })
+      if (this.$route.query.id !== id) {
+        this.$router.push({
+          path: "/Details",
+          query: {
+            id: id
+          }
+        })
+      }
       this.isshow = false
     }
   },
@@ -83,10 +85,10 @@ export default {
 <style lang='scss' scoped>
 .cate-box {
   padding-bottom: 20px;
-  background-color: #fff;
+
   .left {
     width: 25%;
-
+    background-color: #fff;
     border: red solid 1px;
     .box {
       &:hover {
@@ -98,6 +100,7 @@ export default {
   .rigth {
     width: 75%;
     height: 100%;
+    background-color: #fff;
     // box-shadow: 0 0 3px gray;
     .img {
       width: 80px;

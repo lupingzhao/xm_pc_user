@@ -47,7 +47,7 @@ export default {
       // 获取推荐
       this.$api.getRecommend().then(res => {
         if (res.code === 200) {
-          for (let i = 0; i < res.data.length; i += 5) {
+          for (var i = 0; i < res.data.length; i += 5) {
             this.goods.push(res.data.slice(i, i + 5));
           }
           // this.goods = this.goods.slice(0, 2)
