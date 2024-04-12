@@ -76,3 +76,18 @@
     // border-bottom: 1px solid #ff6700 !important;
   }
 }
+
+.box-demo {
+  .ivu-input {
+    border: none;
+    outline: none !important;
+
+    &:hover {
+      border: none;
+    }
+
+    &:focus {
+      border: none !important;
+    }
+  }
+}
